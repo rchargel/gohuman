@@ -11,6 +11,7 @@ type Client struct {
 // NewClient creates a new client.
 func NewClient(name, contactName, email string) Client {
 	return Client{
+		ID:          NewID(name, contactName, email),
 		Name:        name,
 		ContactName: contactName,
 		Email:       email,

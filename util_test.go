@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestNewID(t *testing.T) {
-	l := 300000
+	l := 100000
 	m := make(map[string]bool, l)
 	for i := 0; i < l; i++ {
 		str := NewID("this", "is", "a", "test")
