@@ -23,7 +23,7 @@ func Test_loadImages(t *testing.T) {
 	if im.AllImagesLoaded {
 		t.Log("All images loaded.")
 		for _, img := range im.Images {
-			if len(img.Data) == 0 {
+			if img.Image == nil {
 				t.Errorf("The image %v was not loaded.\n", img.Title)
 			} else {
 				t.Logf("The image %v was successfully loaded.\n", img.Title)

@@ -2,13 +2,16 @@ package main
 
 import (
 	"encoding/json"
+	"image"
+	"image/jpeg"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 )
 
 type loadedImage struct {
-	Data  []byte
+	Image image.Image
 	Index int
 }
 
@@ -25,7 +28,7 @@ func ReadAllImages(imageDir string) *ImageMap {
 }
 
 func loadJSON(jsonFile string) *ImageMap {
-	var tmpImages []Image
+	var tmpImages []ImageObj
 	im := &ImageMap{
 		AllImagesLoaded: false,
 	}
@@ -40,18 +43,20 @@ func loadImages(imageDir string, imageMap *ImageMap) {
 	go loadImagesInternal(imageDir, imageMap.Images, loadedImages)
 
 	for loadedImage := range loadedImages {
-		imageMap.Images[loadedImage.Index].Data = loadedImage.Data
+		imageMap.Images[loadedImage.Index].Image = loadedImage.Image
 	}
 	imageMap.AllImagesLoaded = true
 }
 
-func loadImagesInternal(imageDir string, images []Image, ch chan loadedImage) {
+func loadImagesInternal(imageDir string, images []ImageObj, ch chan loadedImage) {
 	for i, img := range images {
-		imagePath := filepath.Join(imageDir, img.Image)
-		data, _ := ioutil.ReadFile(imagePath)
+		imagePath := filepath.Join(imageDir, img.File)
+		file, _ := os.Open(imagePath)
+		defer file.Close()
+		data, _ := jpeg.Decode(file)
 		ch <- loadedImage{
 			Index: i,
-			Data:  data,
+			Image: data,
 		}
 	}
 	close(ch)
