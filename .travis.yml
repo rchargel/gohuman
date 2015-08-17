@@ -6,7 +6,7 @@ go:
 before_install:
   - zip=`curl -vs https://storage.googleapis.com/appengine-sdks/ 2>&1 | sed -e 's/</\'$'\n</g' | grep featured/google_appengine | sed -e 's/<Key>//' | sort | tail -1`
   - curl -o $HOME/google_appengine.zip https://storage.googleapis.com/appengine-sdks/featured/$zip
-  - unzip -q -d -v $HOME $HOME/google_appengine.zip
+  - unzip -v -d $HOME $HOME/google_appengine.zip
 
 install:
  - go get -v github.com/rchargel/gohuman
