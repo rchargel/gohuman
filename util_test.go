@@ -10,7 +10,6 @@ func TestNewID(t *testing.T) {
 		if _, found := m[str]; found {
 			t.Errorf("%v was already used.\n", str)
 		} else {
-			t.Log(str)
 			m[str] = true
 		}
 	}
