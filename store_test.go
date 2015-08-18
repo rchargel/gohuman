@@ -31,35 +31,16 @@ func TestGetCaptcha2(t *testing.T) {
 	}
 }
 
-func TestPurgeOld1(t *testing.T) {
+func TestPurgeStore(t *testing.T) {
 	s := newStore()
-	s.addCaptcha(Captcha{ID: "TESTING"})
-
-	if len(s.items) == 0 {
-		t.Error("There were never any items in the store")
+	for i := 0; i < 1000; i++ {
+		s.addCaptcha(Captcha{ID: fmt.Sprintf("CAPTCHA_%d", i)})
 	}
-	t.Logf("Items found: %d\n", len(s.items))
+
 	s.purgeOld(-1, -1)
-	if len(s.items) == 1 {
-		t.Errorf("Items were not purged: %d\n", len(s.items))
-	} else {
-		t.Logf("No items left after purge")
-	}
-}
-
-func TestPurgeOld2(t *testing.T) {
-	s := newStore()
-	s.addCaptcha(Captcha{ID: "TESTING"})
-
-	if len(s.items) == 0 {
-		t.Error("There were never any items in the store")
-	}
-	t.Logf("Items found: %d\n", len(s.items))
-	s.purgeOld(100, -1)
-	if len(s.items) == 0 {
-		t.Errorf("Items were purged: %d\n", len(s.items))
-	} else {
-		t.Logf("Items left after purge: %d\n", len(s.items))
+	s.waitForPurgeToComplete()
+	if len(s.items) != 0 {
+		t.Errorf("Still items left in store: %d", len(s.items))
 	}
 }
 
