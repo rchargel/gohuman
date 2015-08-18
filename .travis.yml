@@ -9,4 +9,5 @@ install:
  - go get -v github.com/rchargel/gohuman
 
 script:
- - go test -v -bench=. github.com/rchargel/gohuman
+ - go test -v -coverprofile=c.out -bench=. github.com/rchargel/gohuman
+ - go tool cover -func=c.out
