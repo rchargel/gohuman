@@ -1,4 +1,4 @@
-package main
+package gohuman
 
 import (
 	"path/filepath"

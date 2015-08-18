@@ -1,4 +1,4 @@
-package main
+package gohuman
 
 // CaptchaRequest requests a new captcha in the format of number of images per
 // column and row
