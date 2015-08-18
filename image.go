@@ -2,8 +2,11 @@ package gohuman
 
 import (
 	"image"
+	mtrand "math/rand"
 	"path/filepath"
 )
+
+const captchaImageSize = 80
 
 // ImageObj a wrapper around an image.
 type ImageObj struct {
@@ -23,4 +26,8 @@ var ImageMapper *ImageMap
 
 func init() {
 	ImageMapper = ReadAllImages(filepath.Join(".", "img"))
+}
+
+func (i *ImageMap) getRandomIndex() int {
+	return mtrand.Intn(len(i.Images))
 }
