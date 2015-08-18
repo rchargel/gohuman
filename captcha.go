@@ -26,8 +26,15 @@ func RequestNewCaptcha(r *http.Request, cols, rows int) (Captcha, error) {
 		rows:  rows,
 		index: ImageMapper.getRandomIndex(),
 	}
+	store.addCaptcha(request)
 
 	return request, nil
+}
+
+// LoadCaptcha loads the captcha with the provided ID.
+func LoadCaptcha(r *http.Request) (Captcha, error) {
+	captchaID := r.FormValue("_captcha_id")
+	return store.getCaptcha(captchaID)
 }
 
 // Width gets the width of the new captcha image.

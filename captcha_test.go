@@ -1,7 +1,9 @@
 package gohuman
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -41,5 +43,19 @@ func TestRequestNewCaptchaFail2(t *testing.T) {
 	}
 	if err == nil {
 		t.Error("Should have an error")
+	}
+}
+
+func TestLoadCaptcha1(t *testing.T) {
+	origRequest, _ := http.NewRequest("GET", "http://localhost:8080/", nil)
+	origCaptcha, _ := RequestNewCaptcha(origRequest, 3, 4)
+
+	s := fmt.Sprintf("_captcha_id=%v", origCaptcha.ID)
+	newRequest, _ := http.NewRequest("POST", "http://localhost:8080/", strings.NewReader(s))
+	newRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	newCaptcha, _ := LoadCaptcha(newRequest)
+
+	if newCaptcha.ID != origCaptcha.ID {
+		t.Errorf("Wrong captcha: %v != %v", newCaptcha.ID, origCaptcha.ID)
 	}
 }
