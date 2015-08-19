@@ -2,16 +2,19 @@ package gohuman
 
 import (
 	"fmt"
+	"image"
 	"net/http"
 )
 
 // Captcha requests a new captcha in the format of number of images per
 // column and row
 type Captcha struct {
-	ID    string
-	cols  int
-	rows  int
-	index int
+	ID         string
+	cols       int
+	rows       int
+	index      int
+	indexTitle string
+	image      image.Image
 }
 
 // RequestNewCaptcha creates a new request for use by the client.
@@ -45,4 +48,8 @@ func (c Captcha) Width() int {
 // Height gets the height of the new captch image
 func (c Captcha) Height() int {
 	return captchaImageSize * c.rows
+}
+
+func (c Captcha) numCaptchaImages() int {
+	return c.rows * c.cols
 }
